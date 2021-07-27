@@ -1,4 +1,4 @@
 /* eslint-disable import/prefer-default-export */
-import User from './user.js';
+import Account from './account.js';
 
-export { User };
+export { Account };
