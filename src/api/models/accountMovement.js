@@ -6,24 +6,24 @@ import { composeWithMongoose } from 'graphql-compose-mongoose';
 
 const { Schema } = mongoose;
 
-export const AccountSchema = new Schema({
+export const AccountMovementSchema = new Schema({
   serialNumber: {
     type: String,
     trim: true,
     required: true,
   },
-  balance: {
+  value: {
     type: Number,
     required: true,
   },
   deleted: { type: Boolean, default: false },
 });
 
-AccountSchema.plugin(timestamps);
-AccountSchema.index({ createdAt: 1, updatedAt: 1 });
-// AccountSchema.virtual('fullName').get(function () {
+AccountMovementSchema.plugin(timestamps);
+AccountMovementSchema.index({ createdAt: 1, updatedAt: 1 });
+// AccountMovementSchema.virtual('fullName').get(function () {
 //   return `${this.firstName} ${this.lastName}`;
 // });
 
-export const Account = mongoose.model('Account', AccountSchema);
-export const AccountTC = composeWithMongoose(Account);
+export const AccountMovement = mongoose.model('AccountMovement', AccountMovementSchema);
+export const AccountMovementTC = composeWithMongoose(AccountMovement);

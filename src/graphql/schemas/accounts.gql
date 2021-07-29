@@ -1,0 +1,14 @@
+input AccountRecord {
+  serialNumber: String  
+}
+
+type AccountResponse {
+  serialNumber: String
+}
+
+# type Query {  
+# }
+
+type Mutation {
+  accountCreate(record: AccountRecord): AccountResponse  
+}

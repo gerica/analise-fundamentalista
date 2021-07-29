@@ -1,5 +1,6 @@
 import UtilCrypt from '../../utils/crypt.js';
 import { AccountTC } from '../models/account.js';
+import AccountMovementService from '../services/account/accountMovemintService.js';
 
 const AccountQuery = {
   accountById: AccountTC.getResolver('findById', [UtilCrypt.deletedMiddleware]),
@@ -12,11 +13,11 @@ const AccountQuery = {
 };
 
 const AccountMutation = {
-  accountCreateOne: AccountTC.getResolver('createOne'),
+  accountCreateOne: AccountTC.getResolver('createOne', [AccountMovementService.createMiddleware]),
   // accountCreateMany: AccountTC.getResolver('createMany'),
-  accountUpdateById: AccountTC.getResolver('updateById', [UtilCrypt.authMiddleware]),
-  accountUpdateOne: AccountTC.getResolver('updateOne', [UtilCrypt.authMiddleware]),
-  accountUpdateMany: AccountTC.getResolver('updateMany', [UtilCrypt.authMiddleware]),
+  // accountUpdateById: AccountTC.getResolver('updateById', [UtilCrypt.authMiddleware]),
+  // accountUpdateOne: AccountTC.getResolver('updateOne', [UtilCrypt.authMiddleware]),
+  // accountUpdateMany: AccountTC.getResolver('updateMany', [UtilCrypt.authMiddleware]),
   // accountRemoveById: AccountTC.getResolver('removeById'),
   // accountRemoveOne: AccountTC.getResolver('removeOne'),
   // accountRemoveMany: AccountTC.getResolver('removeMany'),

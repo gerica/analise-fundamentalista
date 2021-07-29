@@ -37,7 +37,7 @@ class BaseMQTT {
   extractResult(message) {
     try {
       const msgObj = JSON.parse(message.content.toString());
-      logger.info(msgObj);
+      logger.debug(msgObj);
       return msgObj;
     } catch (error) {
       // this.handleError(error);
