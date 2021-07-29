@@ -1,8 +1,6 @@
 import logger from '../../../utils/logger.js';
 import config from '../../../config/config.js';
 import BaseMQTT from './baseMQTT.js';
-// import { AccountTC } from '../../models/account.js';
-// import AccountMovementService from '../account/accountMovemintService.js';
 import AccountService from '../account/accountService.js';
 import database from '../../../config/database.js';
 
@@ -13,9 +11,15 @@ const {
   //
 } = config;
 
-class ReceiverMQTT extends BaseMQTT {
+class SubscribeService extends BaseMQTT {
+  constructor() {
+    super();
+    this.accountService = new AccountService();
+  }
+
   async receiveCredit() {
-    logger.info('ReceiverMQTT: receiveCredit');
+    logger.info('SubscribeService: receiveCredit');
+
     try {
       const { channel } = await this.createConnection();
 
@@ -26,26 +30,20 @@ class ReceiverMQTT extends BaseMQTT {
       });
 
       const processMessage = async (message) => {
-        logger.info("[x] %s:'%s'", message.fields.routingKey, message.content.toString());
+        logger.info('[x] receive message');
+        logger.debug("[x] %s:'%s'", message.fields.routingKey, message.content.toString());
         const payload = this.extractResult(message);
-        await database.connect();
-        AccountService.updateCredit(payload);
-        // eslint-disable-next-line max-len
-        // const createAccount = AccountTC.getResolver('createOne', [AccountMovementService.createMiddleware]);
 
-        // createAccount.resolve({
-        //   source: {},
-        //   args: payload,
-        //   context: {},
-        //   info: {},
-        // });
+        await database.connect();
+        await this.accountService.updateCredit(payload);
+        await database.disconnect();
       };
 
       const assertQueue = channel.assertQueue('', {
         exclusive: true,
       });
 
-      logger.info(`[*] MQ: waiting message for ${MQ_TOPIC_CREDIT} and bind ${MQ_TOPIC_CREDIT_BIND}.`);
+      logger.info(`[*] MQ: waiting message for ${MQ_TOPIC_CREDIT} and bind ${MQ_TOPIC_CREDIT_BIND}`);
 
       channel.bindQueue(assertQueue.queue, exchange, MQ_TOPIC_CREDIT_BIND);
 
@@ -60,4 +58,13 @@ class ReceiverMQTT extends BaseMQTT {
   }
 }
 
-export default ReceiverMQTT;
+export default SubscribeService;
+
+// eslint-disable-next-line max-len
+// const createAccount = AccountTC.getResolver('createOne', [AccountMovementService.createMiddleware]);
+// createAccount.resolve({
+//   source: {},
+//   args: payload,
+//   context: {},
+//   info: {},
+// });

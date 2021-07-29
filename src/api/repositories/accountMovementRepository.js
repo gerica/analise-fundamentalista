@@ -3,7 +3,7 @@ import logger from '../../utils/logger.js';
 import { AccountMovement } from '../models/accountMovement.js';
 
 class AccountMovementRepository {
-  static async insert(payload) {
+  async insert(payload) {
     logger.info('AccountMovementRepository:insert');
     let result;
     try {

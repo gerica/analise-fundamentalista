@@ -9,7 +9,7 @@ import resolvers from './graphql/resolvers/index.js';
 import UtilCrypt from './utils/crypt.js';
 import database from './config/database.js';
 import schemaComposer from './api/schema/index.js';
-import ReceiverMQTT from './api/services/mqtt/receiverMQTT.js';
+import SubscribeService from './api/services/cubescan/subscribeService.js';
 
 const { PORT, PATH_GRAPHQL } = config;
 const typeDefs = gql(importSchema('**/*.gql'));
@@ -47,5 +47,5 @@ server.listen({ port: PORT, path: PATH_GRAPHQL }).then(({ url }) => {
 });
 
 // Init services MQTT
-const mqttTopic = new ReceiverMQTT();
+const mqttTopic = new SubscribeService();
 mqttTopic.receiveCredit();

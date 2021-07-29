@@ -1,6 +1,6 @@
 import UtilCrypt from '../../utils/crypt.js';
 import { AccountTC } from '../models/account.js';
-import AccountMovementService from '../services/account/accountMovemintService.js';
+import AccountMovementService from '../services/account/accountMovementService.js';
 
 const AccountQuery = {
   accountById: AccountTC.getResolver('findById', [UtilCrypt.deletedMiddleware]),

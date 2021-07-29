@@ -3,7 +3,7 @@ import logger from '../../utils/logger.js';
 import { Account } from '../models/account.js';
 
 class AccountRepository {
-  static async findOneBy(payload) {
+  async findOneBy(payload) {
     logger.info('AccountRepository:findOneBy');
     let result;
     try {
@@ -11,13 +11,12 @@ class AccountRepository {
       result = await Account.findOne(query).exec();
       logger.debug(result);
     } catch (error) {
-      console.error(error);
       this.handleError(error);
     }
     return result;
   }
 
-  static async updateOne(payload) {
+  async updateOne(payload) {
     logger.info('AccountRepository:updateOne');
     try {
       // eslint-disable-next-line no-underscore-dangle
@@ -28,7 +27,9 @@ class AccountRepository {
     return 'Success';
   }
 
-  static handleError(error) {
+  // eslint-disable-next-line class-methods-use-this
+  handleError(error) {
+    logger.error(error);
     return new UserInputError(error);
   }
 }

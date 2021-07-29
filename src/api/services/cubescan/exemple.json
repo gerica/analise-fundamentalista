@@ -1,0 +1,20 @@
+{
+  "topic": "radiolife/result/response/{number_aleatory}",
+  "serialNumber": "xpto",
+  "results": [
+    {
+      "numberExame": "123654",
+      "result": "P",
+      "date": "10/10/2010 10:10:10",
+      "data_cube_a": "321",
+      "data_cube_a": "-985"
+    },
+    {
+      "numberExame": "963258",
+      "result": "N",
+      "date": "11/11/2011 02:10:45",
+      "data_cube_a": "3424",
+      "data_cube_a": "7785"
+    }
+  ]
+}
