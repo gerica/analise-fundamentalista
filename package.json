@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha 'src/**/*.spec.js' --recursive --exit",
     "start": "node src/serverGraphql.js",
-    "client-mqtt": "node src/api/services/mqtt/clientMQTT.js",
+    "publish-broker": "node src/api/services/cubescan/publishService.js",
     "pm2-start": "pm2 startOrRestart ecosystem.config.json --watch --only RL-Auth-Local",
     "pm2-stop": "pm2 stop RL-Auth-Local",
     "pm2-kill": "pm2 kill",
