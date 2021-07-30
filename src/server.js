@@ -28,6 +28,9 @@ const schemaCompose = buildFederatedSchema([
   },
 ]);
 
+// Init database
+database.connect();
+
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
 const server = new ApolloServer({
@@ -35,7 +38,6 @@ const server = new ApolloServer({
   context: ({ req }) => {
     const token = req.headers.authorization || '';
     const { payload: user, loggedIn } = UtilCrypt.getPayload(token);
-    database.connect();
     return { user, loggedIn };
   },
   dataSources: () => ({}),

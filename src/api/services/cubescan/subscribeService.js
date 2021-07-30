@@ -35,9 +35,7 @@ class SubscribeService extends BaseMQTT {
         logger.debug("[x] %s:'%s'", message.fields.routingKey, message.content.toString());
         const payload = this.extractResult(message);
 
-        await database.connect();
         await this.accountService.updateCredit(payload);
-        await database.disconnect();
       };
 
       const assertQueue = channel.assertQueue('', {
