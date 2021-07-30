@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import logger from '../../../utils/logger.js';
-import AccountMovementRepository from '../../repositories/accountMovementRepository.js';
+import AccountMovementRepository from '../../repositories/account/accountMovementRepository.js';
 
 class AccountMovementService {
   constructor() {
@@ -12,7 +12,7 @@ class AccountMovementService {
     const {
       record: { serialNumber, balance },
     } = args;
-    this.accountMovementRepository.insert({ serialNumber, value: balance });
+    new AccountMovementRepository().insert({ serialNumber, value: balance });
     return resolve(source, args, context, info);
   }
 }

@@ -5,16 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha 'src/**/*.spec.js' --recursive --exit",
-    "start": "node src/serverGraphql.js",
+    "start": "node src/server.js",
     "publish-broker": "node src/api/services/cubescan/publishService.js",
-    "pm2-start": "pm2 startOrRestart ecosystem.config.json --watch --only RL-Auth-Local",
-    "pm2-stop": "pm2 stop RL-Auth-Local",
+    "pm2-start": "pm2 startOrRestart ecosystem.config.json --watch --only Credit-Service-Local",
+    "pm2-stop": "pm2 stop Credit-Service-Local",
     "pm2-kill": "pm2 kill",
     "pm2-list": "pm2 list",
     "see-logs": "pm2 logs",
-    "restart-production": "pm2 startOrRestart ecosystem.config.json --only RL-Auth",
-    "deploy-production": "pm2 deploy ecosystem.config.json production --only RL-Auth",
-    "deploy-production-setup": "pm2 deploy ecosystem.config.json production setup --only RL-Auth-Local"
+    "restart-production": "pm2 startOrRestart ecosystem.config.json --only Credit-Service",
+    "deploy-production": "pm2 deploy ecosystem.config.json production --only Credit-Service",
+    "deploy-production-setup": "pm2 deploy ecosystem.config.json production setup --only Credit-Service-Local"
   },
   "keywords": [],
   "author": "",

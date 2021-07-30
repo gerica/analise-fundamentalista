@@ -17,8 +17,8 @@ class SubscribeService extends BaseMQTT {
     this.accountService = new AccountService();
   }
 
-  async receiveCredit() {
-    logger.info('SubscribeService: receiveCredit');
+  async receiveResult() {
+    logger.info('SubscribeService: receiveResult');
 
     try {
       const { channel } = await this.createConnection();

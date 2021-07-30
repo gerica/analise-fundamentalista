@@ -47,5 +47,5 @@ server.listen({ port: PORT, path: PATH_GRAPHQL }).then(({ url }) => {
 });
 
 // Init services MQTT
-const mqttTopic = new SubscribeService();
-mqttTopic.receiveCredit();
+const subscribeService = new SubscribeService();
+subscribeService.receiveResult();

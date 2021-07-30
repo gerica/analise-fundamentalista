@@ -31,9 +31,9 @@ class UtilCrypt {
 
   static async authMiddleware(resolve, source, args, context, info) {
     logger.info('AuthMiddleware: guard Auth');
-    const { loggedIn, user } = context;
-    UtilCrypt.guardAuth(loggedIn);
-    UtilCrypt.userConfirmed(user);
+    // const { loggedIn, user } = context;
+    // UtilCrypt.guardAuth(loggedIn);
+    // UtilCrypt.userConfirmed(user);
     return resolve(source, args, context, info);
   }
 

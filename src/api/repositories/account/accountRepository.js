@@ -1,6 +1,6 @@
 import { UserInputError } from 'apollo-server-errors';
-import logger from '../../utils/logger.js';
-import { Account } from '../models/account.js';
+import logger from '../../../utils/logger.js';
+import { Account } from '../../models/account.js';
 
 class AccountRepository {
   async findOneBy(payload) {

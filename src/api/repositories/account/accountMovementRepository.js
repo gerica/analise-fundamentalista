@@ -1,6 +1,6 @@
 import { UserInputError } from 'apollo-server-errors';
-import logger from '../../utils/logger.js';
-import { AccountMovement } from '../models/accountMovement.js';
+import logger from '../../../utils/logger.js';
+import { AccountMovement } from '../../models/accountMovement.js';
 
 class AccountMovementRepository {
   async insert(payload) {

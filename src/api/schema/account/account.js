@@ -1,6 +1,8 @@
-import UtilCrypt from '../../utils/crypt.js';
-import { AccountTC } from '../models/account.js';
-import AccountMovementService from '../services/account/accountMovementService.js';
+import UtilCrypt from '../../../utils/crypt.js';
+import { AccountTC } from '../../models/account.js';
+import AccountMovementService from '../../services/account/accountMovementService.js';
+
+const accountMovementService = new AccountMovementService();
 
 const AccountQuery = {
   accountById: AccountTC.getResolver('findById', [UtilCrypt.deletedMiddleware]),
@@ -13,11 +15,11 @@ const AccountQuery = {
 };
 
 const AccountMutation = {
-  accountCreateOne: AccountTC.getResolver('createOne', [AccountMovementService.createMiddleware]),
+  accountCreateOne: AccountTC.getResolver('createOne', [accountMovementService.createMiddleware]),
   // accountCreateMany: AccountTC.getResolver('createMany'),
   // accountUpdateById: AccountTC.getResolver('updateById', [UtilCrypt.authMiddleware]),
   // accountUpdateOne: AccountTC.getResolver('updateOne', [UtilCrypt.authMiddleware]),
-  // accountUpdateMany: AccountTC.getResolver('updateMany', [UtilCrypt.authMiddleware]),
+  // accountUpdateMany: AccountTC.getResolver('updateMany', [UtilCrypt.authMiddleware]),`
   // accountRemoveById: AccountTC.getResolver('removeById'),
   // accountRemoveOne: AccountTC.getResolver('removeOne'),
   // accountRemoveMany: AccountTC.getResolver('removeMany'),
