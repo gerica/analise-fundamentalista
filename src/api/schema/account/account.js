@@ -15,9 +15,9 @@ const AccountQuery = {
 };
 
 const AccountMutation = {
-  accountCreateOne: AccountTC.getResolver('createOne', [accountMovementService.insertByMiddleware]),
+  accountCreateOne: AccountTC.getResolver('createOne', [UtilCrypt.authMiddleware, accountMovementService.insertByMiddleware]),
   // accountCreateMany: AccountTC.getResolver('createMany'),
-  // accountUpdateById: AccountTC.getResolver('updateById', [UtilCrypt.authMiddleware]),
+  accountUpdateById: AccountTC.getResolver('updateById', [UtilCrypt.authMiddleware]),
   // accountUpdateOne: AccountTC.getResolver('updateOne', [UtilCrypt.authMiddleware]),
   // accountUpdateMany: AccountTC.getResolver('updateMany', [UtilCrypt.authMiddleware]),`
   // accountRemoveById: AccountTC.getResolver('removeById'),

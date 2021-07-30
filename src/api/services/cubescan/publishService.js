@@ -11,7 +11,11 @@ const {
 
 class PublishService extends BaseMQTT {
   async response(to, payload) {
+    if (!to) {
+      return;
+    }
     logger.info('PublishService: response');
+
     try {
       const { channel } = await this.createConnection();
 

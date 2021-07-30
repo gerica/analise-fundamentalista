@@ -49,3 +49,4 @@ server.listen({ port: PORT, path: PATH_GRAPHQL }).then(({ url }) => {
 // Init services MQTT
 const subscribeService = new SubscribeService();
 subscribeService.receiveResult();
+subscribeService.getBalance();
