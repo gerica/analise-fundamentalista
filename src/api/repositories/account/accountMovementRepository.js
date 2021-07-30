@@ -9,7 +9,7 @@ class AccountMovementRepository {
     try {
       result = new AccountMovement({ ...payload });
       await result.save();
-      logger.info(`${result.id} documents were inserted with the _id: ${result.id}`);
+      logger.debug(`${result.id} documents were inserted with the _id: ${result.id}`);
     } catch (error) {
       return this.handleError(error);
     }

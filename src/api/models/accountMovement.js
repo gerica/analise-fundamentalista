@@ -6,6 +6,11 @@ import { composeWithMongoose } from 'graphql-compose-mongoose';
 
 const { Schema } = mongoose;
 
+const TYPE_MOVEMENT = {
+  CREDIT: 'Credit',
+  DEBIT: 'DEBIT',
+};
+
 export const AccountMovementSchema = new Schema({
   serialNumber: {
     type: String,
@@ -14,6 +19,11 @@ export const AccountMovementSchema = new Schema({
   },
   value: {
     type: Number,
+    required: true,
+  },
+  type: {
+    type: String,
+    enum: [TYPE_MOVEMENT.CREDIT, TYPE_MOVEMENT.DEBIT],
     required: true,
   },
   deleted: { type: Boolean, default: false },
@@ -27,3 +37,4 @@ AccountMovementSchema.index({ createdAt: 1, updatedAt: 1 });
 
 export const AccountMovement = mongoose.model('AccountMovement', AccountMovementSchema);
 export const AccountMovementTC = composeWithMongoose(AccountMovement);
+export const typeMovement = TYPE_MOVEMENT;

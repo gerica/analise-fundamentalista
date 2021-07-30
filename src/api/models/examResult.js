@@ -10,7 +10,7 @@ export const ExamResultSchema = new Schema({
     trim: true,
     required: true,
   },
-  numberExame: {
+  examNumber: {
     type: String,
     trim: true,
     required: true,

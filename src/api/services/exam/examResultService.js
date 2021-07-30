@@ -7,11 +7,11 @@ class ExamResultService {
     this.examResultRepository = new ExamResultRepository();
   }
 
-  async insertMany(payload) {
+  async insertMany(serialNumber, payload) {
     logger.info('ExamResultService: insertMany');
     if (payload && payload.length > 0) {
-      payload.array.forEach(async (element) => {
-        await this.examResultRepository.insert(element);
+      payload.forEach(async (element) => {
+        await this.examResultRepository.insert({ serialNumber, ...element });
       });
     }
   }
