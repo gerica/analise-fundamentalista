@@ -2,7 +2,6 @@ import logger from '../../../utils/logger.js';
 import config from '../../../config/config.js';
 import BaseMQTT from './baseMQTT.js';
 import AccountService from '../account/accountService.js';
-import database from '../../../config/database.js';
 
 const {
   MQ_TOPIC_CREDIT,
@@ -73,9 +72,7 @@ class SubscribeService extends BaseMQTT {
         logger.debug("[x] %s:'%s'", message.fields.routingKey, message.content.toString());
         const payload = this.extractResult(message);
 
-        await database.connect();
         await this.accountService.getBalance(payload);
-        await database.disconnect();
       };
 
       const assertQueue = channel.assertQueue('', {

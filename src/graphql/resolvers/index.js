@@ -1,10 +1,10 @@
-import * as example from './example.js';
+import * as account from './account.js';
 
 export default {
   Query: {
-    ...example.query,
+    ...account.query,
   },
   Mutation: {
-    ...example.mutation,
+    ...account.mutation,
   },
 };

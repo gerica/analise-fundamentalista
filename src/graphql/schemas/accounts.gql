@@ -1,14 +1,19 @@
 input AccountRecord {
-  serialNumber: String  
+  _id: String
+  value: Int
 }
 
 type AccountResponse {
   serialNumber: String
+  deleted: Boolean
+  balance: Int
+  updatedAt: String
+  createdAt: String
 }
 
-# type Query {  
+# type Query {
 # }
 
 type Mutation {
-  accountCreate(record: AccountRecord): AccountResponse  
+  accountAddCredit(record: AccountRecord): AccountResponse
 }

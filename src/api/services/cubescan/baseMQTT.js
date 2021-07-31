@@ -13,7 +13,7 @@ const {
 class BaseMQTT {
   async createConnection() {
     const urlMQ = `amqp://${MQ_USER}:${MQ_PASSWORD}@${MQ_HOST}`;
-    logger.info(urlMQ);
+    logger.debug(urlMQ);
     const connection = await amqp.connect(urlMQ);
     const channel = await connection.createChannel();
     return { connection, channel };
