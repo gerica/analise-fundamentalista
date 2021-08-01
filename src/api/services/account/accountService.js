@@ -50,13 +50,13 @@ class AccountService {
     if (!account) {
       this.handleError('Anyone account with this id');
     }
-    const updataAccountTC = AccountTC.getResolver('updateById', [this.accountMovementService.insertByMiddleware]);
+    const updateAccountTC = AccountTC.getResolver('updateById', [this.accountMovementService.insertByMiddleware]);
     const newBalance = account.balance + value;
     const accountToUpdate = {
       _id,
       record: { ...account.toObject(), balance: newBalance },
     };
-    updataAccountTC.resolve({ args: accountToUpdate });
+    updateAccountTC.resolve({ args: accountToUpdate });
     logger.info(accountToUpdate.record);
 
     return accountToUpdate.record;
