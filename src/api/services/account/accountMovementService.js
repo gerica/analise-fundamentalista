@@ -20,5 +20,9 @@ class AccountMovementService {
     });
     return resolve(source, args, context, info);
   }
+
+  async insert(payload) {
+    await this.accountMovementRepository.insert(payload);
+  }
 }
 export default AccountMovementService;

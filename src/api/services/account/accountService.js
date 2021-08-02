@@ -1,9 +1,8 @@
+/* eslint-disable max-len */
 /* eslint-disable class-methods-use-this */
 import { UserInputError } from 'apollo-server-errors';
 import logger from '../../../utils/logger.js';
-import { AccountTC } from '../../models/account.js';
 import { typeMovement } from '../../models/accountMovement.js';
-import AccountMovementRepository from '../../repositories/account/accountMovementRepository.js';
 import AccountRepository from '../../repositories/account/accountRepository.js';
 import PublishService from '../cubescan/publishService.js';
 import ExamResultService from '../exam/examResultService.js';
@@ -13,7 +12,6 @@ class AccountService {
   constructor() {
     this.publishService = new PublishService();
     this.accountRepository = new AccountRepository();
-    this.accountMovementRepository = new AccountMovementRepository();
     this.accountMovementService = new AccountMovementService();
     this.examResultService = new ExamResultService();
   }
@@ -32,7 +30,7 @@ class AccountService {
         if (account.balance < 0) {
           account.balance = 0;
         }
-        await this.accountMovementRepository.insert({
+        await this.accountMovementService.insert({
           serialNumber,
           value: countExams,
           type: typeMovement.DEBIT,
@@ -44,22 +42,24 @@ class AccountService {
   }
 
   async addCredit(payload) {
+    // const temp = await AccountQuery.accountById.resolve({ args: { _id } });
     logger.info('AccountService: addCredit');
     const { _id, value } = payload;
     const account = await this.findOneBy({ _id });
-    if (!account) {
-      this.handleError('Anyone account with this id');
-    }
-    const updateAccountTC = AccountTC.getResolver('updateById', [this.accountMovementService.insertByMiddleware]);
+
     const newBalance = account.balance + value;
     const accountToUpdate = {
-      _id,
-      record: { ...account.toObject(), balance: newBalance },
+      ...account.toObject(),
+      balance: newBalance,
     };
-    updateAccountTC.resolve({ args: accountToUpdate });
-    logger.info(accountToUpdate.record);
-
-    return accountToUpdate.record;
+    await this.accountMovementService.insert({
+      serialNumber: account.serialNumber,
+      value,
+      type: typeMovement.CREDIT,
+    });
+    logger.info(accountToUpdate);
+    await this.accountRepository.updateOne(accountToUpdate);
+    return accountToUpdate;
   }
 
   async getBalance(payload) {
@@ -74,14 +74,14 @@ class AccountService {
 
   async findOneBy(clauses) {
     const result = await this.accountRepository.findOneBy(clauses);
-    if (result) {
-      return result;
+    if (!result) {
+      this.handleError('Not found account!');
     }
-    return new UserInputError('Not found account!');
+    return result;
   }
 
-  static handleError(error) {
-    return new UserInputError(error);
+  handleError(error) {
+    throw new UserInputError(error);
   }
 }
 export default AccountService;
