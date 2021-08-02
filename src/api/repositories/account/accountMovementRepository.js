@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import { UserInputError } from 'apollo-server-errors';
 import logger from '../../../utils/logger.js';
 import { AccountMovement } from '../../models/accountMovement.js';
@@ -16,8 +17,21 @@ class AccountMovementRepository {
     return result;
   }
 
-  static handleError(error) {
-    return new UserInputError(error);
+  async findManyBy(payload) {
+    logger.info('AccountMovementRepository: findOneBy');
+    let result;
+    try {
+      const query = { ...payload, deleted: false };
+      result = await AccountMovement.find(query).exec();
+      logger.debug(result);
+    } catch (error) {
+      this.handleError(error);
+    }
+    return result;
+  }
+
+  handleError(error) {
+    throw new UserInputError(error);
   }
 }
 

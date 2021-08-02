@@ -1,9 +1,23 @@
 import UtilCrypt from '../../../utils/crypt.js';
 import { AccountMovementTC } from '../../models/accountMovement.js';
+import AccountMovementRepository from '../../repositories/account/accountMovementRepository.js';
+
+AccountMovementTC.addResolver({
+  name: 'findBySerialNumber',
+  args: { serialNumber: 'String' },
+  type: [AccountMovementTC],
+  resolve: async ({ args }) => {
+    const { serialNumber } = args;
+    const repository = new AccountMovementRepository();
+    const data = await repository.findManyBy({ serialNumber });
+    return data;
+  },
+});
 
 const AccountMovementQuery = {
   accountMovementById: AccountMovementTC.getResolver('findById', [UtilCrypt.deletedMiddleware]),
   accountMovementByIds: AccountMovementTC.getResolver('findByIds', [UtilCrypt.authMiddleware, UtilCrypt.deletedMiddleware]),
+  accountMovementBySN: AccountMovementTC.getResolver('findBySerialNumber', [UtilCrypt.authMiddleware, UtilCrypt.deletedMiddleware]),
   accountMovementOne: AccountMovementTC.getResolver('findOne', [UtilCrypt.authMiddleware, UtilCrypt.deletedMiddleware]),
   accountMovementMany: AccountMovementTC.getResolver('findMany', [UtilCrypt.authMiddleware, UtilCrypt.deletedMiddleware]),
   accountMovementCount: AccountMovementTC.getResolver('count', [UtilCrypt.authMiddleware, UtilCrypt.deletedMiddleware]),
