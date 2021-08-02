@@ -1,15 +1,28 @@
+import { schemaComposer, toInputObjectType } from 'graphql-compose';
 import UtilCrypt from '../../../utils/crypt.js';
 import { AccountMovementTC } from '../../models/accountMovement.js';
 import AccountMovementRepository from '../../repositories/account/accountMovementRepository.js';
 
+const InputTC = schemaComposer.createObjectTC({
+  name: 'dataInput',
+  fields: {
+    value: 'Int',
+    createdAt: 'Int',
+    type: 'Int',
+  },
+});
+
+const InputITC = toInputObjectType(InputTC);
+
 AccountMovementTC.addResolver({
+  kind: 'query',
   name: 'findBySerialNumber',
-  args: { serialNumber: 'String' },
+  args: { serialNumber: 'String', limit: 'Int', sort: InputITC },
   type: [AccountMovementTC],
   resolve: async ({ args }) => {
-    const { serialNumber } = args;
+    const { serialNumber, limit, sort } = args;
     const repository = new AccountMovementRepository();
-    const data = await repository.findManyBy({ serialNumber });
+    const data = await repository.findManyBy({ serialNumber }, limit, sort);
     return data;
   },
 });

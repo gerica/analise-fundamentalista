@@ -1,8 +1,22 @@
 import UtilCrypt from '../../../utils/crypt.js';
+import logger from '../../../utils/logger.js';
 import { AccountTC } from '../../models/account.js';
 import AccountMovementService from '../../services/account/accountMovementService.js';
+import AccountService from '../../services/account/accountService.js';
 
 const accountMovementService = new AccountMovementService();
+
+AccountTC.addResolver({
+  name: 'addCredit',
+  args: { _id: 'String', value: 'Int' },
+  type: AccountTC,
+  resolve: async ({ args }) => {
+    logger.debug('AccountTC.addResolver: Add credit');
+    const service = new AccountService();
+    const data = await service.addCredit(args);
+    return data;
+  },
+});
 
 const AccountQuery = {
   accountById: AccountTC.getResolver('findById', [UtilCrypt.deletedMiddleware]),
@@ -16,8 +30,8 @@ const AccountQuery = {
 
 const AccountMutation = {
   accountCreateOne: AccountTC.getResolver('createOne', [UtilCrypt.authMiddleware, accountMovementService.insertByMiddleware]),
-  // accountCreateMany: AccountTC.getResolver('createMany'),
   accountUpdateById: AccountTC.getResolver('updateById', [UtilCrypt.authMiddleware]),
+  accountAddCredit: AccountTC.getResolver('addCredit', [UtilCrypt.authMiddleware]),
   // accountUpdateOne: AccountTC.getResolver('updateOne', [UtilCrypt.authMiddleware]),
   // accountUpdateMany: AccountTC.getResolver('updateMany', [UtilCrypt.authMiddleware]),`
   // accountRemoveById: AccountTC.getResolver('removeById'),

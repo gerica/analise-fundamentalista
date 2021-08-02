@@ -1,14 +1,18 @@
-import AccountService from '../../api/services/account/accountService.js';
+import { readFile } from 'fs/promises';
 
-const accountService = new AccountService();
+let json;
+async function loadInfo() {
+  json = JSON.parse(await readFile(new URL('../../../package.json', import.meta.url)));
+}
 
 const query = {
-  // example1: () => service.example1(),
-  // example2: () => service.example2(),
-  // accountAddCredit: (_, { record }) => accountService.addCredit(record),
-  // allMsg: () => service.allMsg(),
+  versionCreditService: async () => {
+    await loadInfo();
+    const { name, version } = json;
+    return `${name} - version:${version}`;
+  },
 };
 const mutation = {
-  accountAddCredit: (_, { record }) => accountService.addCredit(record),
+  // accountAddCredit: (_, { record }) => accountService.addCredit(record),
 };
 export { query, mutation };

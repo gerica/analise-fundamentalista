@@ -1,19 +1,20 @@
-input AccountRecord {
-  _id: String
-  value: Int
-}
-
-type AccountResponse {
-  serialNumber: String
-  deleted: Boolean
-  balance: Int
-  updatedAt: String
-  createdAt: String
-}
-
-# type Query {
+# input AccountRecord {
+#   _id: String
+#   value: Int
 # }
 
-type Mutation {
-  accountAddCredit(record: AccountRecord): AccountResponse
+# type AccountResponse {
+#   serialNumber: String
+#   deleted: Boolean
+#   balance: Int
+#   updatedAt: String
+#   createdAt: String
+# }
+
+type Query {
+  versionCreditService: String
 }
+
+# type Mutation {
+#   # accountAddCredit(record: AccountRecord): AccountResponse
+# }

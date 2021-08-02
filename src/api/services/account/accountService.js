@@ -57,7 +57,7 @@ class AccountService {
       value,
       type: typeMovement.CREDIT,
     });
-    logger.info(accountToUpdate);
+    logger.debug(accountToUpdate);
     await this.accountRepository.updateOne(accountToUpdate);
     return accountToUpdate;
   }

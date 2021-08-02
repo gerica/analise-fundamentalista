@@ -8,7 +8,7 @@ const { Schema } = mongoose;
 
 const TYPE_MOVEMENT = {
   CREDIT: 'Credit',
-  DEBIT: 'DEBIT',
+  DEBIT: 'Debit',
 };
 
 export const AccountMovementSchema = new Schema({

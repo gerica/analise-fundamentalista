@@ -17,12 +17,21 @@ class AccountMovementRepository {
     return result;
   }
 
-  async findManyBy(payload) {
+  async findManyBy(payload, limit = 10, sort) {
     logger.info('AccountMovementRepository: findOneBy');
     let result;
     try {
       const query = { ...payload, deleted: false };
-      result = await AccountMovement.find(query).exec();
+      const mongoQuery = AccountMovement.find(query);
+      if (sort) {
+        const listItems = [];
+        Object.entries(sort).forEach((item) => {
+          listItems.push(item);
+        });
+        mongoQuery.sort(listItems);
+      }
+      mongoQuery.limit(limit);
+      result = await mongoQuery.exec();
       logger.debug(result);
     } catch (error) {
       this.handleError(error);
