@@ -1,6 +1,7 @@
 import logger from '../../../utils/logger.js';
 import config from '../../../config/config.js';
 import BaseMQTT from './baseMQTT.js';
+import ExamResultService from '../exam/examResultService.js';
 import AccountService from '../account/accountService.js';
 
 const {
@@ -14,6 +15,7 @@ const {
 class SubscribeService extends BaseMQTT {
   constructor() {
     super();
+    this.examResultService = new ExamResultService();
     this.accountService = new AccountService();
   }
 
@@ -34,7 +36,7 @@ class SubscribeService extends BaseMQTT {
         logger.debug("[x] %s:'%s'", message.fields.routingKey, message.content.toString());
         const payload = this.extractResult(message);
 
-        await this.accountService.updateCredit(payload);
+        await this.examResultService.saveExamsResult(payload);
       };
 
       const assertQueue = channel.assertQueue('', {

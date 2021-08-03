@@ -17,7 +17,7 @@ class ExamResultRepository {
   }
 
   async findOneBy(payload) {
-    logger.info('ExamResultRepository:findOneBy');
+    logger.info('ExamResultRepository: findOneBy');
     let result;
     try {
       const query = { ...payload, deleted: false };
@@ -29,10 +29,32 @@ class ExamResultRepository {
     return result;
   }
 
+  async findManyBy(payload, limit = 10, sort) {
+    logger.info('ExamResultRepository: findManyBy');
+    let result;
+    try {
+      const query = { ...payload, deleted: false };
+      const mongoQuery = ExamResult.find(query);
+      if (sort) {
+        const listItems = [];
+        Object.entries(sort).forEach((item) => {
+          listItems.push(item);
+        });
+        mongoQuery.sort(listItems);
+      }
+      mongoQuery.limit(limit);
+      result = await mongoQuery.exec();
+      logger.debug(result);
+    } catch (error) {
+      this.handleError(error);
+    }
+    return result;
+  }
+
   // eslint-disable-next-line class-methods-use-this
   handleError(error) {
     logger.error(error);
-    return new UserInputError(error);
+    throw UserInputError(error);
   }
 }
 

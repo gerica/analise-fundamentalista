@@ -1,11 +1,9 @@
-/* eslint-disable max-len */
 /* eslint-disable class-methods-use-this */
 import { UserInputError } from 'apollo-server-errors';
 import logger from '../../../utils/logger.js';
 import { typeMovement } from '../../models/accountMovement.js';
 import AccountRepository from '../../repositories/account/accountRepository.js';
 import PublishService from '../cubescan/publishService.js';
-import ExamResultService from '../exam/examResultService.js';
 import AccountMovementService from './accountMovementService.js';
 
 class AccountService {
@@ -13,32 +11,6 @@ class AccountService {
     this.publishService = new PublishService();
     this.accountRepository = new AccountRepository();
     this.accountMovementService = new AccountMovementService();
-    this.examResultService = new ExamResultService();
-  }
-
-  async updateCredit(payload) {
-    logger.info('AccountService: updateCredit');
-    const { serialNumber } = payload;
-    const account = await this.findOneBy({ serialNumber });
-    if (account) {
-      const { results, topic } = payload;
-      if (results && results.length > 0) {
-        const countExams = results.length;
-        await this.examResultService.insertMany(serialNumber, results);
-        const balanceInt = countExams;
-        account.balance -= balanceInt;
-        if (account.balance < 0) {
-          account.balance = 0;
-        }
-        await this.accountMovementService.insert({
-          serialNumber,
-          value: countExams,
-          type: typeMovement.DEBIT,
-        });
-        await this.accountRepository.updateOne(account);
-        this.publishService.response(topic, { balance: account.balance });
-      }
-    }
   }
 
   async addCredit(payload) {
@@ -77,6 +49,11 @@ class AccountService {
     if (!result) {
       this.handleError('Not found account!');
     }
+    return result;
+  }
+
+  async updateOne(payload) {
+    const result = await this.accountRepository.updateOne(payload);
     return result;
   }
 
