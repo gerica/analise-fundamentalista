@@ -36,6 +36,7 @@ class Database {
     let connection;
     try {
       connection = await mongoose.connect(uri, options);
+      mongoose.set('debug', 'true');
     } catch (error) {
       this.handleError(error);
     }
