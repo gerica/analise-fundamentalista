@@ -5,11 +5,7 @@ import { composeWithMongoose } from 'graphql-compose-mongoose';
 const { Schema } = mongoose;
 
 export const ExamResultSchema = new Schema({
-  serialNumber: {
-    type: String,
-    trim: true,
-    required: true,
-  },
+  device: { type: Schema.Types.ObjectId, ref: 'Device' },
   examNumber: {
     type: String,
     trim: true,

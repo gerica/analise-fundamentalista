@@ -11,6 +11,8 @@ const ExamResultQuery = {
   examResultPagination: ExamResultTC.getResolver('pagination', [UtilCrypt.authMiddleware, UtilCrypt.deletedMiddleware]),
 };
 
-const ExamResultMutation = {};
+const ExamResultMutation = {
+  examResultCreateOne: ExamResultTC.getResolver('createOne'),
+};
 
 export { ExamResultQuery, ExamResultMutation };

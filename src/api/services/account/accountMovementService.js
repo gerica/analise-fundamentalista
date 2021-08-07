@@ -1,25 +1,38 @@
 /* eslint-disable class-methods-use-this */
 import logger from '../../../utils/logger.js';
 import { typeMovement } from '../../models/accountMovement.js';
-import AccountMovementRepository from '../../repositories/account/accountMovementRepository.js';
+import { AccountMovementMutation } from '../../schema/account/accountMovement.js';
 
 class AccountMovementService {
   constructor() {
-    this.accountMovementRepository = new AccountMovementRepository();
+    this.mutation = AccountMovementMutation;
   }
 
-  async insertByMiddleware(resolve, source, args, context, info) {
-    logger.info('AccountMovementService: createMiddleware');
-    const {
-      record: { serialNumber, balance },
-    } = args;
-    new AccountMovementRepository().insert({
-      serialNumber,
-      value: balance,
-      type: typeMovement.CREDIT,
+  async createOne(idAccount, value) {
+    logger.info('AccountMovementService: createOne');
+    return this.mutation.accountMovementCreateOne.resolve({
+      args: {
+        record: {
+          account: idAccount,
+          value,
+          type: typeMovement.DEBIT,
+        },
+      },
     });
-    return resolve(source, args, context, info);
   }
+
+  // async insertByMiddleware(resolve, source, args, context, info) {
+  //   logger.info('AccountMovementService: createMiddleware');
+  //   const {
+  //     record: { serialNumber, balance },
+  //   } = args;
+  //   new AccountMovementRepository().insert({
+  //     serialNumber,
+  //     value: balance,
+  //     type: typeMovement.CREDIT,
+  //   });
+  //   return resolve(source, args, context, info);
+  // }
 
   async insert(payload) {
     await this.accountMovementRepository.insert(payload);

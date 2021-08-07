@@ -1,27 +1,28 @@
 /* eslint-disable class-methods-use-this */
 import logger from '../../../utils/logger.js';
-import AccountService from '../account/accountService.js';
-import ExamResultRepository from '../../repositories/exam/examResultRepository.js';
-import { typeMovement } from '../../models/accountMovement.js';
 import PublishService from '../cubescan/publishService.js';
 import AccountMovementService from '../account/accountMovementService.js';
+import DeviceService from '../device/deviceService.js';
+import { ExamResultMutation, ExamResultQuery } from '../../schema/exam/examResult.js';
 
 class ExamResultService {
   constructor() {
-    this.examResultRepository = new ExamResultRepository();
-    this.accountService = new AccountService();
-    this.publishService = new PublishService();
+    this.deviceService = new DeviceService();
     this.accountMovementService = new AccountMovementService();
+    this.publishService = new PublishService();
+    this.query = ExamResultQuery;
+    this.mutation = ExamResultMutation;
   }
 
-  async insertMany(serialNumber, payload) {
+  async insertMany(device, payload) {
     logger.info('ExamResultService: insertMany');
     let countInsert = 0;
     if (payload && payload.length > 0) {
+      const { _id } = device;
       const promiseFind = [];
       payload.forEach((element) => {
         const { examNumber } = element;
-        promiseFind.push(this.findOneBy({ examNumber }));
+        promiseFind.push(this.findOne({ examNumber }));
       });
 
       const exams = await Promise.all(promiseFind);
@@ -31,7 +32,16 @@ class ExamResultService {
         if (!exam) {
           const element = payload[index];
           countInsert += 1;
-          promiseInsert.push(this.examResultRepository.insert({ serialNumber, ...element }));
+          promiseInsert.push(
+            this.mutation.examResultCreateOne.resolve({
+              args: {
+                record: {
+                  device: _id,
+                  ...element,
+                },
+              },
+            }),
+          );
         }
       });
 
@@ -40,19 +50,25 @@ class ExamResultService {
     return countInsert;
   }
 
-  async findOneBy(clauses) {
-    const result = await this.examResultRepository.findOneBy(clauses);
+  async findOne(clauses) {
+    const result = await this.query.examResultOne.resolve({
+      args: {
+        filter: clauses,
+      },
+    });
     return result;
   }
 
   async saveExamsResult(payload) {
     logger.info('ExamResultService: saveExamsResult');
     const { serialNumber } = payload;
-    const account = await this.accountService.findOneBy({ serialNumber });
-    if (account) {
+    const device = await this.deviceService.findOne({ serialNumber });
+
+    if (device) {
       const { results, topic } = payload;
       if (results && results.length > 0) {
-        const inserted = await this.insertMany(serialNumber, results);
+        const inserted = await this.insertMany(device, results);
+        const { account } = device;
 
         account.balance -= inserted;
         if (account.balance < 0) {
@@ -60,13 +76,12 @@ class ExamResultService {
         }
 
         if (inserted > 0) {
-          await this.accountMovementService.insert({
-            serialNumber,
-            value: inserted,
-            type: typeMovement.DEBIT,
-          });
-
-          await this.accountService.updateOne(account);
+          const { _id } = account;
+          const promises = [];
+          promises.push(this.accountMovementService.createOne(_id, inserted));
+          device.account = account;
+          promises.push(this.deviceService.updateOne(device.toObject()));
+          await Promise.all(promises);
         }
         this.publishService.response(topic, { balance: account.balance });
       }

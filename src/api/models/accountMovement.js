@@ -12,11 +12,7 @@ const TYPE_MOVEMENT = {
 };
 
 export const AccountMovementSchema = new Schema({
-  serialNumber: {
-    type: String,
-    trim: true,
-    required: true,
-  },
+  account: { type: Schema.Types.ObjectId, ref: 'Account' },
   value: {
     type: Number,
     required: true,
