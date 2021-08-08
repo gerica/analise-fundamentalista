@@ -80,7 +80,7 @@ class ExamResultService {
           const promises = [];
           promises.push(this.accountMovementService.createOne(_id, inserted));
           device.account = account;
-          promises.push(this.deviceService.updateOne(device.toObject()));
+          promises.push(this.deviceService.updateOne({ args: device.toObject() }));
           await Promise.all(promises);
         }
         this.publishService.response(topic, { balance: account.balance });

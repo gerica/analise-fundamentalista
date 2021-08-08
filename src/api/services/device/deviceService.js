@@ -21,14 +21,14 @@ class DeviceService {
     return device;
   }
 
-  async updateOne(device) {
+  async updateOne({ args }) {
     logger.info('DeviceService: updateOne');
-    const { _id } = device;
+    const { _id } = args;
     return this.mutation.deviceUpdateById.resolve({
       args: {
         _id,
         record: {
-          ...device,
+          ...args,
         },
       },
     });
