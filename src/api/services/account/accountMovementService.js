@@ -15,7 +15,7 @@ class AccountMovementService {
         record: {
           account: idAccount,
           value,
-          type: typeMovement.DEBIT,
+          type: value < 0 ? typeMovement.DEBIT : typeMovement.CREDIT,
         },
       },
     });

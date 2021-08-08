@@ -1,6 +1,10 @@
+/* eslint-disable no-underscore-dangle */
 import UtilCrypt from '../../../utils/crypt.js';
 import logger from '../../../utils/logger.js';
 import { DeviceTC } from '../../models/device.js';
+import AccountMovementService from '../../services/account/accountMovementService.js';
+
+const accountMovementService = new AccountMovementService();
 
 DeviceTC.addResolver({
   kind: 'mutation',
@@ -15,16 +19,22 @@ DeviceTC.addResolver({
     account.balance += value;
     device.account = account;
 
-    await DeviceTC.getResolver('updateById').resolve({
-      context,
-      info,
-      args: {
-        _id,
-        record: {
-          ...device.toObject(),
+    const promises = [];
+    promises.push(accountMovementService.createOne(account._id, value));
+
+    promises.push(
+      DeviceTC.getResolver('updateById').resolve({
+        context,
+        info,
+        args: {
+          _id,
+          record: {
+            ...device.toObject(),
+          },
         },
-      },
-    });
+      }),
+    );
+    await Promise.all(promises);
     return device;
   },
 });
