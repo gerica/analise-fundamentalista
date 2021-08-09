@@ -5,16 +5,24 @@ import logger from '../../../utils/logger.js';
 import { AccountMovementTC } from '../../models/accountMovement.js';
 import { DeviceTC } from '../../models/device.js';
 
-// const InputTC = schemaComposer.createObjectTC({
-//   name: 'dataInput',
-//   fields: {
-//     value: 'Int',
-//     createdAt: 'Int',
-//     type: 'Int',
+// const OrderETC = schemaComposer.createEnumTC({
+//   name: 'StatusEnum',
+//   values: {
+//     VALUE_ASC: { value: 1 },
+//     VALUE_DESC: { value: -1 },
+//     TYPE_ASC: { value: 1 },
+//     TYPE_DESC: { value: -1 },
 //   },
 // });
 
-// const InputITC = toInputObjectType(InputTC);
+// const FindBySerialNumberSortTC = schemaComposer.createObjectTC({
+//   name: 'FindBySerialNumberSort',
+//   fields: {
+//     sort: AccountMovementTC.getResolver('findMany').args.sort,
+//   },
+// });
+
+// const FindBySerialNumberSortITC = toInputObjectType(FindBySerialNumberSortTC);
 
 AccountMovementTC.addResolver({
   kind: 'query',
@@ -22,6 +30,7 @@ AccountMovementTC.addResolver({
   args: {
     serialNumber: 'String',
     limit: 'Int',
+    sort: AccountMovementTC.getResolver('findMany').args.sort,
     //   filter: `input CityFilterInput {
     //   code: String!
     // }`,
@@ -30,7 +39,8 @@ AccountMovementTC.addResolver({
   type: [AccountMovementTC],
   resolve: async ({ args }, context, info) => {
     logger.info('AccountMovementTC: findBySerialNumber');
-    const { serialNumber, limit } = args;
+    const { serialNumber, limit, sort } = args;
+    logger.info(sort);
     const device = await DeviceTC.getResolver('findOne').resolve({
       args: { filter: { serialNumber } },
       context,
@@ -46,6 +56,7 @@ AccountMovementTC.addResolver({
               account: _id,
             },
             limit,
+            sort,
           },
           context,
           info,

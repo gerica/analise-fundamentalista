@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import UtilCrypt from '../../../utils/crypt.js';
 import logger from '../../../utils/logger.js';
+import { typeMovement } from '../../models/accountMovement.js';
 import { DeviceTC } from '../../models/device.js';
 import AccountMovementService from '../../services/account/accountMovementService.js';
 
@@ -20,7 +21,8 @@ DeviceTC.addResolver({
     device.account = account;
 
     const promises = [];
-    promises.push(accountMovementService.createOne(account._id, value));
+    const type = value > 0 ? typeMovement.CREDIT : typeMovement.DEBIT;
+    promises.push(accountMovementService.createOne(account._id, value, type));
 
     promises.push(
       DeviceTC.getResolver('updateById').resolve({

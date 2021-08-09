@@ -4,6 +4,7 @@ import PublishService from '../cubescan/publishService.js';
 import AccountMovementService from '../account/accountMovementService.js';
 import DeviceService from '../device/deviceService.js';
 import { ExamResultMutation, ExamResultQuery } from '../../schema/exam/examResult.js';
+import { typeMovement } from '../../models/accountMovement.js';
 
 class ExamResultService {
   constructor() {
@@ -78,7 +79,7 @@ class ExamResultService {
         if (inserted > 0) {
           const { _id } = account;
           const promises = [];
-          promises.push(this.accountMovementService.createOne(_id, inserted));
+          promises.push(this.accountMovementService.createOne(_id, inserted, typeMovement.DEBIT));
           device.account = account;
           promises.push(this.deviceService.updateOne({ args: device.toObject() }));
           await Promise.all(promises);

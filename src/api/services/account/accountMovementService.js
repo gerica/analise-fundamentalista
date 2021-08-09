@@ -1,6 +1,5 @@
 /* eslint-disable class-methods-use-this */
 import logger from '../../../utils/logger.js';
-import { typeMovement } from '../../models/accountMovement.js';
 import { AccountMovementMutation } from '../../schema/account/accountMovement.js';
 
 class AccountMovementService {
@@ -8,14 +7,14 @@ class AccountMovementService {
     this.mutation = AccountMovementMutation;
   }
 
-  async createOne(idAccount, value) {
+  async createOne(idAccount, value, type) {
     logger.info('AccountMovementService: createOne');
     return this.mutation.accountMovementCreateOne.resolve({
       args: {
         record: {
           account: idAccount,
           value,
-          type: value < 0 ? typeMovement.DEBIT : typeMovement.CREDIT,
+          type,
         },
       },
     });
