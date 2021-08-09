@@ -16,11 +16,13 @@ export const AccountMovementSchema = new Schema({
   value: {
     type: Number,
     required: true,
+    index: true,
   },
   type: {
     type: String,
     enum: [TYPE_MOVEMENT.CREDIT, TYPE_MOVEMENT.DEBIT],
     required: true,
+    index: true,
   },
   deleted: { type: Boolean, default: false },
 });
