@@ -1,21 +1,21 @@
 import { SchemaComposer } from 'graphql-compose';
-import { AccountMovementQuery, AccountMovementMutation } from './account/accountMovement.js';
-import { DeviceMutationExport } from './device/device.js';
-
-import { ExamResultQuery, ExamResultMutation } from './exam/examResult.js';
+import { CommonMutation, CommonQuery } from './common.js';
+import { FundamentoMutation, FundamentoQuery } from './fundamento.js';
+import { PapelMutation, PapelQuery } from './papel.js';
 
 const schemaComposer = new SchemaComposer();
 
 schemaComposer.Query.addFields({
-  ...AccountMovementQuery,
-  ...ExamResultQuery,
+  ...PapelQuery,
+  ...FundamentoQuery,
+  ...CommonQuery,
 });
 
 schemaComposer.Mutation.addFields({
-  ...AccountMovementMutation,
-  ...ExamResultMutation,
-  ...DeviceMutationExport,
+  ...CommonMutation,
+  ...PapelMutation,
+  ...FundamentoMutation,
 });
 
-// const graphqlSchema = schemaComposer.buildSchema();
-export default schemaComposer;
+const graphqlSchema = schemaComposer.buildSchema();
+export default graphqlSchema;

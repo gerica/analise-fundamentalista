@@ -1,5 +1,5 @@
 {
-  "name": "credit-service",
+  "name": "fundamentalista",
   "version": "1.0.0",
   "description": "Service credit",
   "main": "index.js",
@@ -7,14 +7,14 @@
     "test": "mocha 'src/**/*.spec.js' --recursive --exit",
     "start": "node src/server.js",
     "publish-broker": "node src/api/services/cubescan/publishService.js",
-    "pm2-start": "pm2 startOrRestart ecosystem.config.json --watch --only Credit-Service-Local",
-    "pm2-stop": "pm2 stop Credit-Service-Local",
+    "pm2-start": "pm2 startOrRestart ecosystem.config.json --watch --only fundamentalista-Local",
+    "pm2-stop": "pm2 stop fundamentalista-Local",
     "pm2-kill": "pm2 kill",
     "pm2-list": "pm2 list",
     "see-logs": "pm2 logs",
-    "restart-production": "pm2 startOrRestart ecosystem.config.json --only Credit-Service",
-    "deploy-production": "pm2 deploy ecosystem.config.json production --only Credit-Service",
-    "deploy-production-setup": "pm2 deploy ecosystem.config.json production setup --only Credit-Service-Local"
+    "restart-production": "pm2 startOrRestart ecosystem.config.json --only fundamentalista",
+    "deploy-production": "pm2 deploy ecosystem.config.json production --only fundamentalista",
+    "deploy-production-setup": "pm2 deploy ecosystem.config.json production setup --only fundamentalista-Local"
   },
   "keywords": [],
   "author": "",
