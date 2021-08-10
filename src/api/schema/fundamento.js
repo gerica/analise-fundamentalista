@@ -1,13 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import UtilCrypt from '../../utils/crypt.js';
-import logger from '../../utils/logger.js';
-import { typeMovement } from '../models/accountMovement.js';
 import { FundamentoTC } from '../models/fundamento.js';
-import AccountMovementService from '../services/account/accountMovementService.js';
 
 const FundamentoQuery = {
-  fundamentoById: FundamentoTC.getResolver('findById', [UtilCrypt.deletedMiddleware]),
-  fundamentoOne: FundamentoTC.getResolver('findOne', [UtilCrypt.deletedMiddleware]),
   fundamentoById: FundamentoTC.getResolver('findById', [UtilCrypt.deletedMiddleware]),
   fundamentoByIds: FundamentoTC.getResolver('findByIds', [UtilCrypt.deletedMiddleware]),
   fundamentoOne: FundamentoTC.getResolver('findOne', [UtilCrypt.deletedMiddleware]),
@@ -19,7 +14,7 @@ const FundamentoQuery = {
 
 const FundamentoMutation = {
   fundamentoCreateOne: FundamentoTC.getResolver('createOne'),
-  // fundamentoCreateMany: FundamentoTC.getResolver('createMany'),
+  fundamentoCreateMany: FundamentoTC.getResolver('createMany'),
   fundamentoUpdateById: FundamentoTC.getResolver('updateById'),
   fundamentoUpdateOne: FundamentoTC.getResolver('updateOne'),
   // fundamentoUpdateMany: FundamentoTC.getResolver('updateMany'),

@@ -1,12 +1,7 @@
 /* eslint-disable class-methods-use-this */
-import { ApolloServer, gql } from 'apollo-server';
-import { buildFederatedSchema } from '@apollo/federation';
-
-import { importSchema } from 'graphql-import';
-import { mergeResolvers, mergeTypeDefs } from '@graphql-tools/merge';
+import { ApolloServer } from 'apollo-server';
 import graphqlSchema from '../../schema/index.js';
 import config from '../../../config/config.js';
-import resolvers from '../../../graphql/resolvers/index.js';
 import UtilCrypt from '../../../utils/crypt.js';
 import logger from '../../../utils/logger.js';
 

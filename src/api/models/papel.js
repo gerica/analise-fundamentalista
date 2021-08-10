@@ -1,14 +1,14 @@
 import mongoose from 'mongoose';
 import timestamps from 'mongoose-timestamp';
 import { composeWithMongoose } from 'graphql-compose-mongoose';
-import { Fundamento } from './fundamento.js';
+import { FundamentoSchema } from './fundamento.js';
 
 const { Schema } = mongoose;
 
 export const PapelSchema = new Schema({
   nome: String,
   papel: String,
-  fundamento: [Fundamento],
+  fundamento: [{ type: FundamentoSchema }],
   deleted: { type: Boolean, default: false },
 });
 

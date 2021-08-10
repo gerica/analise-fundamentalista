@@ -23,8 +23,8 @@ class Database {
 
     const options = {
       autoIndex: false, // Don't build indexes
-      reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
-      reconnectInterval: 500, // Reconnect every 500ms
+      // reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
+      // reconnectInterval: 500, // Reconnect every 500ms
       poolSize: 50, // Maintain up to 10 socket connections
       // If not connected, return errors immediately rather than waiting for reconnect
       bufferMaxEntries: 0,
@@ -32,6 +32,7 @@ class Database {
       // auth: { authSource: 'admin' },
       user: MONGO_USER,
       pass: MONGO_PASSWORD,
+      useUnifiedTopology: true,
     };
     let connection;
     try {

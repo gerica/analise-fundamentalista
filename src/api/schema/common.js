@@ -1,5 +1,6 @@
 import { readFile } from 'fs/promises';
 import logger from '../../utils/logger.js';
+import PapelService from '../services/papelService.js';
 
 let json;
 async function loadInfo() {
@@ -7,7 +8,7 @@ async function loadInfo() {
 }
 
 const CommonQuery = {
-  versionDeviceService: {
+  versionService: {
     type: 'String',
     resolve: async () => {
       logger.info('Get version');
@@ -19,6 +20,16 @@ const CommonQuery = {
   },
 };
 
-const CommonMutation = {};
+const CommonMutation = {
+  carga: {
+    type: 'String',
+    resolve: async () => {
+      logger.info('Ralizar Carga');
+      PapelService.realizarCarga();
+
+      return 'sucesso';
+    },
+  },
+};
 
 export { CommonQuery, CommonMutation };
