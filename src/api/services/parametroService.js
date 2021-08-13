@@ -4,6 +4,33 @@ import UtilCrypt from '../../utils/crypt.js';
 import logger from '../../utils/logger.js';
 import { ParametroTC } from '../models/parametro.js';
 
+export const FUNDAMENTOS = {
+  cotacao: 'Cotação',
+  pl: 'P/L',
+  pl_min: 'P/L min',
+  pl_max: 'P/L max',
+  p_vp: 'P/VP',
+  p_vp_min: 'P/VP min',
+  p_vp_max: 'P/VP max',
+  psr: 'PSR',
+  div_yield: 'Div.Yield',
+  p_ativo: 'P/Ativo',
+  p_cap_giro: 'P/Cap.Giro',
+  p_ebit: 'P / EBIT',
+  p_ativ_circ_liq: 'P/Ativ Circ.Liq',
+  ev_ebit: 'EV/EBIT',
+  ev_ebitda: 'EV/EBITDA',
+  mrg_ebit: 'Mrg Ebit',
+  mrg_liq: 'Mrg. Líq.',
+  liq_corr: 'Liq. Corr.',
+  roic: 'ROIC',
+  roe: 'ROE',
+  liq_2_meses: 'Liq.2meses',
+  patrim_liq: 'Patrim. Líq',
+  div_brut: 'Dív.Brut/ Patrim.',
+  cresc_rec_5a: 'Cresc. Rec.5a',
+};
+
 class ParametroService {
   constructor() {
     this.initQuery();
@@ -69,30 +96,43 @@ class ParametroService {
   getParametroInitValues() {
     const result = [];
 
-    result.push({ descricao: 'Cotação', ativo: false, valorRef: 0 });
-    result.push({ descricao: 'P/L min', ativo: true, valorRef: 1 });
-    result.push({ descricao: 'P/L max', ativo: true, valorRef: 30 });
-    result.push({ descricao: 'P/VP min', ativo: true, valorRef: 0 });
-    result.push({ descricao: 'P/VP max', ativo: true, valorRef: 20 });
-    result.push({ descricao: 'PSR', ativo: false, valorRef: 0 });
-    result.push({ descricao: 'Div.Yield', ativo: true, valorRef: 0 });
-    result.push({ descricao: 'P/Ativo', ativo: false, valorRef: 0 });
-    result.push({ descricao: 'P/Cap.Giro', ativo: false, valorRef: 0 });
-    result.push({ descricao: 'P / EBIT', ativo: false, valorRef: 0 });
-    result.push({ descricao: 'P/Ativ', ativo: false, valorRef: 0 });
-    result.push({ descricao: 'Circ.Liq', ativo: false, valorRef: 0 });
-    result.push({ descricao: 'EV/EBIT', ativo: false, valorRef: 0 });
-    result.push({ descricao: 'EV/EBITDA', ativo: false, valorRef: 0 });
-    result.push({ descricao: 'Mrg Ebit', ativo: true, valorRef: 0 });
-    result.push({ descricao: 'Mrg. Líq.', ativo: false, valorRef: 0 });
-    result.push({ descricao: 'Liq. Corr.', ativo: true, valorRef: 1 });
-    result.push({ descricao: 'ROIC', ativo: true, valorRef: 0 });
-    result.push({ descricao: 'ROE', ativo: true, valorRef: 0 });
-    result.push({ descricao: 'Liq.2meses', ativo: true, valorRef: 100000 });
-    result.push({ descricao: 'Patrim. Líq', ativo: false, valorRef: 0 });
-    result.push({ descricao: 'Dív.Brut/ Patrim.', ativo: false, valorRef: 0 });
-    result.push({ descricao: 'Cresc. Rec.5a', ativo: false, valorRef: 0 });
+    result.push({ descricao: FUNDAMENTOS.cotacao, ativo: false, valorRef: 0 });
+    result.push({ descricao: FUNDAMENTOS.pl_min, ativo: true, valorRef: 1 });
+    result.push({ descricao: FUNDAMENTOS.pl_max, ativo: true, valorRef: 30 });
+    result.push({ descricao: FUNDAMENTOS.p_vp_min, ativo: true, valorRef: 0 });
+    result.push({ descricao: FUNDAMENTOS.p_vp_max, ativo: true, valorRef: 20 });
+    result.push({ descricao: FUNDAMENTOS.psr, ativo: false, valorRef: 0 });
+    result.push({ descricao: FUNDAMENTOS.div_yield, ativo: true, valorRef: 0 });
+    result.push({ descricao: FUNDAMENTOS.p_ativo, ativo: false, valorRef: 0 });
+    result.push({ descricao: FUNDAMENTOS.p_cap_giro, ativo: false, valorRef: 0 });
+    result.push({ descricao: FUNDAMENTOS.p_ebit, ativo: false, valorRef: 0 });
+    result.push({ descricao: FUNDAMENTOS.p_ativ_circ_liq, ativo: false, valorRef: 0 });
+    result.push({ descricao: FUNDAMENTOS.ev_ebit, ativo: false, valorRef: 0 });
+    result.push({ descricao: FUNDAMENTOS.ev_ebitda, ativo: false, valorRef: 0 });
+    result.push({ descricao: FUNDAMENTOS.mrg_ebit, ativo: true, valorRef: 0 });
+    result.push({ descricao: FUNDAMENTOS.mrg_liq, ativo: false, valorRef: 0 });
+    result.push({ descricao: FUNDAMENTOS.liq_corr, ativo: true, valorRef: 1 });
+    result.push({ descricao: FUNDAMENTOS.roic, ativo: true, valorRef: 0 });
+    result.push({ descricao: FUNDAMENTOS.roe, ativo: true, valorRef: 0 });
+    result.push({ descricao: FUNDAMENTOS.liq_2_meses, ativo: true, valorRef: 100000 });
+    result.push({ descricao: FUNDAMENTOS.patrim_liq, ativo: false, valorRef: 0 });
+    result.push({ descricao: FUNDAMENTOS.div_brut, ativo: false, valorRef: 0 });
+    result.push({ descricao: FUNDAMENTOS.cresc_rec_5a, ativo: false, valorRef: 0 });
     return result;
+  }
+
+  async getParametrosAtivos({ source, context, info }) {
+    const args = {
+      filter: {
+        ativo: true,
+      },
+    };
+    return this.query.parametroMany.resolve({
+      source,
+      args,
+      context,
+      info,
+    });
   }
 }
 

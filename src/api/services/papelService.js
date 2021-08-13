@@ -5,9 +5,11 @@ import UtilCrypt from '../../utils/crypt.js';
 import logger from '../../utils/logger.js';
 import { PapelTC } from '../models/papel.js';
 import HtmlParseService from './htmlParseService.js';
+import ParametroService from './parametroService.js';
 
 class PapelService {
   constructor() {
+    this.parametroService = new ParametroService();
     this.initQuery();
     this.initMutation();
   }
@@ -56,25 +58,37 @@ class PapelService {
     PapelTC.addFields({
       rank: 'Int',
     });
-    // const PapelAnalizarTC = schemaComposer.createObjectTC({
-    //   name: 'PapelAnalizarTC',
-    //   fields: {
-    //     papeis: {
-    //       type: () => PapelTC,
-    //     },
-    //   },
-    // });
+
     return schemaComposer.createResolver({
       kink: 'query',
       name: 'papelAnalisar',
       type: [PapelTC],
-      resolve: async ({ source, args, context, info }) => {
+      resolve: async (payload) => {
         logger.info('Resolve papel analizar');
-        const result = await this.query.papelMany.resolve({ source, args, context, info });
-        return result;
+        const papeis = await this.query.papelMany.resolve(payload);
+        const parametros = await this.parametroService.getParametrosAtivos(payload);
+        this.analizarPaper(papeis, parametros);
+        return papeis;
       },
     });
+  }
+
+  analizarPaper(papeis, parametros) {
+    if (papeis && papeis.length > 0) {
+      papeis.forEach((papel) => {
+        
+      });
+    }
   }
 }
 
 export default PapelService;
+
+// const PapelAnalizarTC = schemaComposer.createObjectTC({
+//   name: 'PapelAnalizarTC',
+//   fields: {
+//     papeis: {
+//       type: () => PapelTC,
+//     },
+//   },
+// });

@@ -6,14 +6,16 @@ import mongooseUniqueValidator from 'mongoose-unique-validator';
 const { Schema } = mongoose;
 
 export const FundamentoSchema = new Schema({
-  p_l: Number,
-  p_vp: Number,
-  dividentoYIELD: Number,
-  margemEBIT: Number,
-  liquidezCorrete: Number,
-  liquidez2Meses: Number,
-  roe: Number,
-  crescimento: Number,
+  descricao: String,
+  valor: Number,
+  // p_l: Number,
+  // p_vp: Number,
+  // dividentoYIELD: Number,
+  // margemEBIT: Number,
+  // liquidezCorrete: Number,
+  // liquidez2Meses: Number,
+  // roe: Number,
+  // crescimento: Number,
   deleted: { type: Boolean, default: false },
 });
 

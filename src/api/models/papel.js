@@ -8,7 +8,7 @@ const { Schema } = mongoose;
 export const PapelSchema = new Schema({
   nome: String,
   papel: String,
-  fundamento: [{ type: FundamentoSchema }],
+  fundamentos: [{ type: FundamentoSchema }],
   deleted: { type: Boolean, default: false },
 });
 
