@@ -6,7 +6,6 @@
   "scripts": {
     "test": "mocha 'src/**/*.spec.js' --recursive --exit",
     "start": "node src/server.js",
-    "publish-broker": "node src/api/services/cubescan/publishService.js",
     "pm2-start": "pm2 startOrRestart ecosystem.config.json --watch --only fundamentalista-Local",
     "pm2-stop": "pm2 stop fundamentalista-Local",
     "pm2-kill": "pm2 kill",

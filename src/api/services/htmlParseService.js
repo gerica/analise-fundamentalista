@@ -43,21 +43,6 @@ class HtmlParseService {
         });
     });
 
-    // papeis.push({
-    //   name: 'BBTG12',
-    //   papel: 'BBTG12',
-    //   fundamento: {
-    //     p_l: StringUtils.convertToCurrency('37.998,00'),
-    //     p_vp: StringUtils.convertToCurrency('44.331,00'),
-    //     dividentoYIELD: StringUtils.convertToCurrency('0,00'),
-    //     margemEBIT: StringUtils.convertToCurrency('0,00'),
-    //     liquidezCorrete: StringUtils.convertToCurrency('0,00'),
-    //     roe: StringUtils.convertToCurrency('116,67'),
-    //     liquidez2Meses: StringUtils.convertToCurrency('0,00'),
-    //     crescimento: StringUtils.convertToCurrency('0,00'),
-    //   },
-    // });
-
     return papeis;
   }
 }
