@@ -25,7 +25,7 @@ class HtmlParseService {
               //   logger.info(resPapel);
               const tds = $(tr).text().split('\n');
               const namePapel = tds[1];
-              const papel = { name: namePapel, papel: namePapel };
+              const papel = { nome: namePapel, papel: namePapel };
               const fundamento = {
                 p_l: StringUtils.convertToCurrency(StringUtils.removeCharacters(tds[3], '%')),
                 p_vp: StringUtils.convertToCurrency(StringUtils.removeCharacters(tds[4], '%')),

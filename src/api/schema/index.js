@@ -1,20 +1,19 @@
 import { SchemaComposer } from 'graphql-compose';
-import { CommonMutation, CommonQuery } from './common.js';
-import { FundamentoMutation, FundamentoQuery } from './fundamento.js';
-import { PapelMutation, PapelQuery } from './papel.js';
+import CommonService from '../services/commonService.js';
+import PapelService from '../services/papelService.js';
 
 const schemaComposer = new SchemaComposer();
+const commonService = new CommonService();
+const papelService = new PapelService();
 
 schemaComposer.Query.addFields({
-  ...PapelQuery,
-  ...FundamentoQuery,
-  ...CommonQuery,
+  ...papelService.query,
+  ...commonService.query,
 });
 
 schemaComposer.Mutation.addFields({
-  ...CommonMutation,
-  ...PapelMutation,
-  ...FundamentoMutation,
+  ...papelService.mutation,
+  ...commonService.mutation,
 });
 
 const graphqlSchema = schemaComposer.buildSchema();
