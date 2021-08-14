@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable no-param-reassign */
 /* eslint-disable object-curly-newline */
 /* eslint-disable class-methods-use-this */
 import { schemaComposer } from 'graphql-compose';
@@ -5,7 +7,7 @@ import UtilCrypt from '../../utils/crypt.js';
 import logger from '../../utils/logger.js';
 import { PapelTC } from '../models/papel.js';
 import HtmlParseService from './htmlParseService.js';
-import ParametroService from './parametroService.js';
+import ParametroService, { FUNDAMENTOS } from './parametroService.js';
 
 class PapelService {
   constructor() {
@@ -57,6 +59,7 @@ class PapelService {
     logger.info('PapelService: getPapelAnalisar');
     PapelTC.addFields({
       rank: 'Int',
+      pontos: 'Int',
     });
 
     return schemaComposer.createResolver({
@@ -65,20 +68,141 @@ class PapelService {
       type: [PapelTC],
       resolve: async (payload) => {
         logger.info('Resolve papel analizar');
-        const papeis = await this.query.papelMany.resolve(payload);
+        const { source, context, info, args } = payload;
+        const papeis = await this.query.papelMany.resolve({
+          source,
+          context,
+          info,
+          args,
+          // args: { limit: 430 },
+          //
+        });
         const parametros = await this.parametroService.getParametrosAtivos(payload);
-        this.analizarPaper(papeis, parametros);
-        return papeis;
+        return this.analizarPaper(papeis, parametros);
+        // return papeis;
       },
     });
   }
 
   analizarPaper(papeis, parametros) {
+    logger.info('PapelService: analizarPaper');
+    const result = [];
     if (papeis && papeis.length > 0) {
+      const getParametro = (fundamento) => {
+        let param;
+        if (parametros && parametros.length > 0) {
+          param = parametros.find((parametro) => parametro.descricao === fundamento.descricao);
+        }
+        return param;
+      };
+
       papeis.forEach((papel) => {
-        
+        // logger.info(papel);
+        const adicionar = papel.fundamentos.every((fundamento) => {
+          if (fundamento.descricao === FUNDAMENTOS.pl) {
+            const parametroMin = getParametro({ descricao: FUNDAMENTOS.pl_min });
+            const parametroMax = getParametro({ descricao: FUNDAMENTOS.pl_max });
+            // eslint-disable-next-line max-len
+            if (parametroMin && parametroMax && (fundamento.valor < parametroMin.valorRef || fundamento.valor > parametroMax.valorRef)) {
+              return false;
+            }
+            return true;
+          }
+          if (fundamento.descricao === FUNDAMENTOS.p_vp) {
+            const parametroMin = getParametro({ descricao: FUNDAMENTOS.p_vp_min });
+            const parametroMax = getParametro({ descricao: FUNDAMENTOS.p_vp_max });
+            // eslint-disable-next-line max-len
+            if (parametroMin && parametroMax && (fundamento.valor < parametroMin.valorRef || fundamento.valor > parametroMax.valorRef)) {
+              return false;
+            }
+            return true;
+          }
+          const parametro = getParametro(fundamento);
+          if (parametro && fundamento.valor < parametro.valorRef) {
+            return false;
+          }
+          return true;
+        });
+        if (adicionar) {
+          const newPapel = { ...papel.toObject(), rank: 0, pontos: 0 };
+          result.push(newPapel);
+        }
       });
     }
+    logger.info(`Antes de analisar: ${papeis.length}`);
+    logger.info(`Depois de analisar: ${result.length}`);
+    this.calcularPontos(result, parametros);
+    return result;
+  }
+
+  calcularPontos(lista, fundamentos) {
+    logger.info('PapelService: calcularPontos');
+    fundamentos.forEach((fundamento) => {
+      let ordenar = true;
+      if (FUNDAMENTOS.pl_min === fundamento.descricao) {
+        fundamento.descricao = FUNDAMENTOS.pl;
+      }
+      if (FUNDAMENTOS.p_vp_min === fundamento.descricao) {
+        fundamento.descricao = FUNDAMENTOS.p_vp;
+      }
+
+      if (FUNDAMENTOS.pl_max === fundamento.descricao || FUNDAMENTOS.p_vp_max === fundamento.descricao) {
+        ordenar = false;
+      }
+      if (ordenar) {
+        lista.sort((papelA, papelB) => {
+          const fundA = papelA.fundamentos.find((f) => f.descricao === fundamento.descricao);
+          const fundB = papelB.fundamentos.find((f) => f.descricao === fundamento.descricao);
+          // Quanto menor melhor
+          if (fundamento.descricao === FUNDAMENTOS.pl || fundamento.descricao === FUNDAMENTOS.p_vp) {
+            if (fundA.valor > fundB.valor) {
+              return 1;
+            }
+            if (fundA.valor < fundB.valor) {
+              return -1;
+            }
+            // a must be equal to b
+            return 0;
+          }
+          // Quanto maior melhor
+          if (fundB.valor > fundA.valor) {
+            return 1;
+          }
+          if (fundB.valor < fundA.valor) {
+            return -1;
+          }
+          // a must be equal to b
+          return 0;
+        });
+      }
+      this.adicionarPontos(lista);
+    });
+    this.calcularRank(lista);
+  }
+
+  adicionarPontos(lista) {
+    // logger.info('PapelService: adicionarPontos');
+    lista.forEach((papel, index) => {
+      // eslint-disable-next-line no-param-reassign
+      papel.pontos += index;
+    });
+  }
+
+  calcularRank(lista) {
+    lista.sort((papelA, papelB) => {
+      if (papelA.pontos > papelB.pontos) {
+        return 1;
+      }
+      if (papelA.pontos < papelB.pontos) {
+        return -1;
+      }
+      // a must be equal to b
+      return 0;
+    });
+    lista.forEach((papel, index) => {
+      // eslint-disable-next-line no-param-reassign
+      papel.rank = index + 1;
+    });
   }
 }
 
