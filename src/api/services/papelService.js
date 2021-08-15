@@ -45,7 +45,7 @@ class PapelService {
 
   async realizarCarga() {
     logger.info('PapelService: realizarCarga');
-    const papel = await this.query.papelOne.resolve({ args: { filter: { _operators: { createdAt: { gte: StringUtils.getData() } } } } });
+    const papel = await this.query.papelOne.resolve({ args: { filter: { _operators: { createdAt: { gte: StringUtils.getDataInicioDia() } } } } });
     if (!papel) {
       const papeis = await HtmlParseService.parse();
 
@@ -69,23 +69,44 @@ class PapelService {
     return schemaComposer.createResolver({
       kink: 'query',
       name: 'papelAnalisar',
+      args: { dataRef: 'Date' },
       type: [PapelTC],
       resolve: async (payload) => {
         logger.info('Resolve papel analizar');
-        const { source, context, info, args } = payload;
-        const papeis = await this.query.papelMany.resolve({
-          source,
-          context,
-          info,
-          args,
-          // args: { limit: 430 },
-          //
-        });
-        const parametros = await this.parametroService.getParametrosAtivos(payload);
-        return this.analizarPaper(papeis, parametros);
-        // return papeis;
+        const result = await this.analizarPapelPorData(payload);
+        return result;
       },
     });
+  }
+
+  async analizarPapelPorData(payload) {
+    logger.info('PapelService: analizarPapelPorData');
+    const { args } = payload;
+    const { dataRef } = args;
+    let dataPesquisa;
+    if (dataRef) {
+      dataPesquisa = dataRef;
+    } else {
+      dataPesquisa = new Date();
+    }
+    const newArgs = {};
+
+    newArgs.filter = {
+      AND: [
+        { _operators: { createdAt: { gte: StringUtils.getDataInicioDia(dataPesquisa) } } },
+        //
+        { _operators: { createdAt: { lte: StringUtils.getDataFinalDiaDia(dataPesquisa) } } },
+      ],
+    };
+
+    const papeis = await this.query.papelMany.resolve({
+      ...payload,
+      args: newArgs,
+      // args: { limit: 430 },
+      //
+    });
+    const parametros = await this.parametroService.getParametrosAtivos(payload);
+    return this.analizarPaper(papeis, parametros);
   }
 
   analizarPaper(papeis, parametros) {

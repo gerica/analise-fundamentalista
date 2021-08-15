@@ -20,9 +20,25 @@ class StringUtils {
     return null;
   }
 
-  static getData() {
-    const date = new Date();
+  static getDataInicioDia(dataRef) {
+    let date;
+    if (dataRef) {
+      date = new Date(dataRef);
+    } else {
+      date = new Date();
+    }
     date.setHours(0, 0, 0, 0);
+    return date;
+  }
+
+  static getDataFinalDiaDia(dataRef) {
+    let date;
+    if (dataRef) {
+      date = new Date(dataRef);
+    } else {
+      date = new Date();
+    }
+    date.setUTCHours(23, 59, 59, 999);
     return date;
   }
 }
