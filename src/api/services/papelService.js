@@ -175,34 +175,38 @@ class PapelService {
         ordenar = false;
       }
       if (ordenar) {
-        lista.sort((papelA, papelB) => {
-          const fundA = papelA.fundamentos.find((f) => f.descricao === fundamento.descricao);
-          const fundB = papelB.fundamentos.find((f) => f.descricao === fundamento.descricao);
-          // Quanto menor melhor
-          if (fundamento.descricao === FUNDAMENTOS.pl || fundamento.descricao === FUNDAMENTOS.p_vp) {
-            if (fundA.valor > fundB.valor) {
-              return 1;
-            }
-            if (fundA.valor < fundB.valor) {
-              return -1;
-            }
-            // a must be equal to b
-            return 0;
-          }
-          // Quanto maior melhor
-          if (fundB.valor > fundA.valor) {
-            return 1;
-          }
-          if (fundB.valor < fundA.valor) {
-            return -1;
-          }
-          // a must be equal to b
-          return 0;
-        });
+        this.ordenar(lista, fundamento);
       }
       this.adicionarPontos(lista);
     });
     this.calcularRank(lista);
+  }
+
+  ordenar(lista, fundamento) {
+    lista.sort((papelA, papelB) => {
+      const fundA = papelA.fundamentos.find((f) => f.descricao === fundamento.descricao);
+      const fundB = papelB.fundamentos.find((f) => f.descricao === fundamento.descricao);
+      // Quanto menor melhor
+      if (fundamento.maiorMelhor) {
+        // Quanto maior melhor
+        if (fundB.valor > fundA.valor) {
+          return 1;
+        }
+        if (fundB.valor < fundA.valor) {
+          return -1;
+        }
+        // a must be equal to b
+        return 0;
+      }
+      if (fundA.valor > fundB.valor) {
+        return 1;
+      }
+      if (fundA.valor < fundB.valor) {
+        return -1;
+      }
+      // a must be equal to b
+      return 0;
+    });
   }
 
   adicionarPontos(lista) {
