@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable object-curly-newline */
 /* eslint-disable class-methods-use-this */
 import { schemaComposer } from 'graphql-compose';
 import UtilCrypt from '../../utils/crypt.js';
@@ -96,28 +98,28 @@ class ParametroService {
   getParametroInitValues() {
     const result = [];
 
-    result.push({ descricao: FUNDAMENTOS.cotacao, ativo: false, valorRef: 0 });
-    result.push({ descricao: FUNDAMENTOS.pl_min, ativo: true, valorRef: 1 });
-    result.push({ descricao: FUNDAMENTOS.pl_max, ativo: true, valorRef: 30 });
-    result.push({ descricao: FUNDAMENTOS.p_vp_min, ativo: true, valorRef: 0 });
-    result.push({ descricao: FUNDAMENTOS.p_vp_max, ativo: true, valorRef: 20 });
-    result.push({ descricao: FUNDAMENTOS.psr, ativo: false, valorRef: 0 });
-    result.push({ descricao: FUNDAMENTOS.div_yield, ativo: true, valorRef: 0 });
-    result.push({ descricao: FUNDAMENTOS.p_ativo, ativo: false, valorRef: 0 });
-    result.push({ descricao: FUNDAMENTOS.p_cap_giro, ativo: false, valorRef: 0 });
-    result.push({ descricao: FUNDAMENTOS.p_ebit, ativo: false, valorRef: 0 });
-    result.push({ descricao: FUNDAMENTOS.p_ativ_circ_liq, ativo: false, valorRef: 0 });
-    result.push({ descricao: FUNDAMENTOS.ev_ebit, ativo: false, valorRef: 0 });
-    result.push({ descricao: FUNDAMENTOS.ev_ebitda, ativo: false, valorRef: 0 });
-    result.push({ descricao: FUNDAMENTOS.mrg_ebit, ativo: true, valorRef: 0 });
-    result.push({ descricao: FUNDAMENTOS.mrg_liq, ativo: false, valorRef: 0 });
-    result.push({ descricao: FUNDAMENTOS.liq_corr, ativo: true, valorRef: 1 });
-    result.push({ descricao: FUNDAMENTOS.roic, ativo: true, valorRef: 0 });
-    result.push({ descricao: FUNDAMENTOS.roe, ativo: true, valorRef: 0 });
-    result.push({ descricao: FUNDAMENTOS.liq_2_meses, ativo: true, valorRef: 100000 });
-    result.push({ descricao: FUNDAMENTOS.patrim_liq, ativo: false, valorRef: 0 });
-    result.push({ descricao: FUNDAMENTOS.div_brut, ativo: false, valorRef: 0 });
-    result.push({ descricao: FUNDAMENTOS.cresc_rec_5a, ativo: false, valorRef: 0 });
+    result.push({ descricao: FUNDAMENTOS.cotacao, ativo: false, valorRef: 0, maiorMelhor: false });
+    result.push({ descricao: FUNDAMENTOS.pl_min, ativo: true, valorRef: 1, maiorMelhor: false });
+    result.push({ descricao: FUNDAMENTOS.pl_max, ativo: true, valorRef: 30, maiorMelhor: false });
+    result.push({ descricao: FUNDAMENTOS.p_vp_min, ativo: true, valorRef: 0, maiorMelhor: false });
+    result.push({ descricao: FUNDAMENTOS.p_vp_max, ativo: true, valorRef: 20, maiorMelhor: false });
+    result.push({ descricao: FUNDAMENTOS.psr, ativo: false, valorRef: 0, maiorMelhor: true });
+    result.push({ descricao: FUNDAMENTOS.div_yield, ativo: true, valorRef: 0, maiorMelhor: true });
+    result.push({ descricao: FUNDAMENTOS.p_ativo, ativo: false, valorRef: 0, maiorMelhor: true });
+    result.push({ descricao: FUNDAMENTOS.p_cap_giro, ativo: false, valorRef: 0, maiorMelhor: true });
+    result.push({ descricao: FUNDAMENTOS.p_ebit, ativo: false, valorRef: 0, maiorMelhor: true });
+    result.push({ descricao: FUNDAMENTOS.p_ativ_circ_liq, ativo: false, valorRef: 0, maiorMelhor: true });
+    result.push({ descricao: FUNDAMENTOS.ev_ebit, ativo: false, valorRef: 0, maiorMelhor: true });
+    result.push({ descricao: FUNDAMENTOS.ev_ebitda, ativo: false, valorRef: 0, maiorMelhor: true });
+    result.push({ descricao: FUNDAMENTOS.mrg_ebit, ativo: true, valorRef: 0, maiorMelhor: true });
+    result.push({ descricao: FUNDAMENTOS.mrg_liq, ativo: false, valorRef: 0, maiorMelhor: true });
+    result.push({ descricao: FUNDAMENTOS.liq_corr, ativo: true, valorRef: 1, maiorMelhor: true });
+    result.push({ descricao: FUNDAMENTOS.roic, ativo: true, valorRef: 0, maiorMelhor: true });
+    result.push({ descricao: FUNDAMENTOS.roe, ativo: true, valorRef: 0, maiorMelhor: true });
+    result.push({ descricao: FUNDAMENTOS.liq_2_meses, ativo: true, valorRef: 100000, maiorMelhor: true });
+    result.push({ descricao: FUNDAMENTOS.patrim_liq, ativo: false, valorRef: 0, maiorMelhor: true });
+    result.push({ descricao: FUNDAMENTOS.div_brut, ativo: false, valorRef: 0, maiorMelhor: true });
+    result.push({ descricao: FUNDAMENTOS.cresc_rec_5a, ativo: false, valorRef: 0, maiorMelhor: true });
     return result;
   }
 

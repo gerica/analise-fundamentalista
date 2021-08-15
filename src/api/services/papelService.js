@@ -5,6 +5,7 @@
 import { schemaComposer } from 'graphql-compose';
 import UtilCrypt from '../../utils/crypt.js';
 import logger from '../../utils/logger.js';
+import StringUtils from '../../utils/stringUtils.js';
 import { PapelTC } from '../models/papel.js';
 import HtmlParseService from './htmlParseService.js';
 import ParametroService, { FUNDAMENTOS } from './parametroService.js';
@@ -44,15 +45,18 @@ class PapelService {
 
   async realizarCarga() {
     logger.info('PapelService: realizarCarga');
-    const papeis = await HtmlParseService.parse();
-    // logger.info(papeis);
-    const createMany = PapelTC.getResolver('createMany');
+    const papel = await this.query.papelOne.resolve({ args: { filter: { _operators: { createdAt: { gte: StringUtils.getData() } } } } });
+    if (!papel) {
+      const papeis = await HtmlParseService.parse();
 
-    createMany.resolve({
-      args: {
-        records: papeis,
-      },
-    });
+      await this.mutation.papelCreateMany.resolve({
+        args: {
+          records: papeis,
+        },
+      });
+      return 'Carga realizada com sucesso';
+    }
+    return 'A carga para hoje já foi realizada';
   }
 
   getPapelAnalisar() {

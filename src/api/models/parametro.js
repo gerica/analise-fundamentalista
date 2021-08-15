@@ -8,6 +8,7 @@ export const ParametroSchema = new Schema({
   descricao: String,
   ativo: Boolean,
   valorRef: Number,
+  maiorMelhor: Boolean,
   deleted: { type: Boolean, default: false },
 });
 

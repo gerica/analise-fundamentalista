@@ -45,8 +45,8 @@ class CommonService {
       type: 'String',
       resolve: async () => {
         logger.info('Ralizar Carga');
-        this.papelService.realizarCarga();
-        return 'sucesso';
+        const result = await this.papelService.realizarCarga();
+        return result;
       },
     };
   }
