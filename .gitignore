@@ -4,3 +4,4 @@ combined.log
 err.log
 src/config/.env
 .env
+package-lock.json

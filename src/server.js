@@ -9,7 +9,7 @@ class Server {
   }
 
   async init() {
-    logger.info('🚀 Init credit service');
+    logger.info('🚀 Init fundamentalista-api service');
     await this.initDatabase();
     await this.initGraphQl();
   }
