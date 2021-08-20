@@ -105,6 +105,7 @@ class PapelService {
       // args: { limit: 430 },
       //
     });
+
     const parametros = await this.parametroService.getParametrosAtivos(payload);
     return this.analizarPaper(papeis, parametros);
   }

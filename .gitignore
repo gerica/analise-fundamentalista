@@ -3,5 +3,5 @@ out.log
 combined.log
 err.log
 src/config/.env
-.env
+# .env
 package-lock.json

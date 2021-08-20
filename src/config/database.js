@@ -18,18 +18,8 @@ class Database {
     return new SyntaxError(error);
   }
 
-  //   const { MongoClient } = require('mongodb');
-  // const uri = "mongodb+srv://analise:<password>@cluster0.f1tpy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-  // const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-  // client.connect(err => {
-  //   const collection = client.db("test").collection("devices");
-  //   // perform actions on the collection object
-  //   client.close();
-  // });
-
   async connect() {
     const uri = `${MONGO_CONNECTION}/${DATABASE_NAME}`;
-
     const options = {
       autoIndex: false, // Don't build indexes
       // reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
