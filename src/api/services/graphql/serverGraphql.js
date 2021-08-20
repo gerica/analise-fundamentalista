@@ -19,6 +19,7 @@ class ServerGraphql {
         return { user, loggedIn };
       },
       dataSources: () => ({}),
+      introspection: true,
     });
 
     // The `listen` method launches a web server.

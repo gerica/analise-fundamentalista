@@ -20,7 +20,6 @@ class Database {
 
   async connect() {
     const uri = `${MONGO_CONNECTION}/${DATABASE_NAME}`;
-
     const options = {
       autoIndex: false, // Don't build indexes
       // reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
