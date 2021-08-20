@@ -1,6 +1,6 @@
 {
   "name": "fundamentalista",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Service credit",
   "main": "index.js",
   "scripts": {
