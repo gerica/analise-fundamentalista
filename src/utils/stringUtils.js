@@ -9,7 +9,7 @@ class StringUtils {
   static convertToCurrency(string) {
     if (string) {
       const temp = StringUtils.replaceAll(string, '.', '');
-      return StringUtils.replaceAll(temp, ',', '');
+      return StringUtils.replaceAll(temp, ',', '.');
     }
     return null;
   }
@@ -47,8 +47,18 @@ class StringUtils {
 
 export default StringUtils;
 
-// 60.351.000,00
-// console.log(StringUtils.removeCharacters('10,72%', '%'));
-// const val = '60.351.000,00%';
-// console.log(val);
-// console.log(StringUtils.convertToCurrency(StringUtils.removeCharacters(val, '%')));
+const val1 = '1.083.050.000,00';
+const val2 = '-0,40%';
+const val3 = '28,98%';
+const val4 = '-362,66%';
+console.log('------------ inicio');
+console.log(val1);
+console.log(val2);
+console.log(val3);
+console.log(val4);
+console.log('------------ antes');
+console.log(StringUtils.convertToCurrency(StringUtils.removeCharacters(val1, '%')));
+console.log(StringUtils.convertToCurrency(StringUtils.removeCharacters(val2, '%')));
+console.log(StringUtils.convertToCurrency(StringUtils.removeCharacters(val3, '%')));
+console.log(StringUtils.convertToCurrency(StringUtils.removeCharacters(val4, '%')));
+console.log('------------ final');
