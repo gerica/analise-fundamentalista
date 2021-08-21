@@ -49,12 +49,12 @@ class PapelService {
     if (!papel) {
       const papeis = await HtmlParseService.parse();
 
-      await this.mutation.papelCreateMany.resolve({
+      this.mutation.papelCreateMany.resolve({
         args: {
           records: papeis,
         },
       });
-      return 'Carga realizada com sucesso';
+      return 'Carga em processamento.';
     }
     return 'A carga para hoje já foi realizada';
   }
