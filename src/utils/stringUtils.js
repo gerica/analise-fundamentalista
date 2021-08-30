@@ -47,18 +47,18 @@ class StringUtils {
 
 export default StringUtils;
 
-const val1 = '1.083.050.000,00';
-const val2 = '-0,40%';
-const val3 = '28,98%';
-const val4 = '-362,66%';
-console.log('------------ inicio');
-console.log(val1);
-console.log(val2);
-console.log(val3);
-console.log(val4);
-console.log('------------ antes');
-console.log(StringUtils.convertToCurrency(StringUtils.removeCharacters(val1, '%')));
-console.log(StringUtils.convertToCurrency(StringUtils.removeCharacters(val2, '%')));
-console.log(StringUtils.convertToCurrency(StringUtils.removeCharacters(val3, '%')));
-console.log(StringUtils.convertToCurrency(StringUtils.removeCharacters(val4, '%')));
-console.log('------------ final');
+// const val1 = '1.083.050.000,00';
+// const val2 = '-0,40%';
+// const val3 = '28,98%';
+// const val4 = '-362,66%';
+// console.log('------------ inicio');
+// console.log(val1);
+// console.log(val2);
+// console.log(val3);
+// console.log(val4);
+// console.log('------------ antes');
+// console.log(StringUtils.convertToCurrency(StringUtils.removeCharacters(val1, '%')));
+// console.log(StringUtils.convertToCurrency(StringUtils.removeCharacters(val2, '%')));
+// console.log(StringUtils.convertToCurrency(StringUtils.removeCharacters(val3, '%')));
+// console.log(StringUtils.convertToCurrency(StringUtils.removeCharacters(val4, '%')));
+// console.log('------------ final');

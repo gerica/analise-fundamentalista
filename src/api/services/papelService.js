@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
 /* eslint-disable object-curly-newline */
@@ -47,16 +48,20 @@ class PapelService {
     logger.info('PapelService: realizarCarga');
     const papel = await this.query.papelOne.resolve({ args: { filter: { _operators: { createdAt: { gte: StringUtils.getDataInicioDia() } } } } });
     if (!papel) {
-      const papeis = await HtmlParseService.parse();
-
-      this.mutation.papelCreateMany.resolve({
-        args: {
-          records: papeis,
-        },
-      });
+      this.obterPapelInesir();
       return 'Carga em processamento.';
     }
     return 'A carga para hoje já foi realizada';
+  }
+
+  async obterPapelInesir() {
+    const papeis = await HtmlParseService.parse();
+
+    this.mutation.papelCreateMany.resolve({
+      args: {
+        records: papeis,
+      },
+    });
   }
 
   getPapelAnalisar() {
@@ -87,7 +92,13 @@ class PapelService {
     if (dataRef) {
       dataPesquisa = dataRef;
     } else {
-      dataPesquisa = new Date();
+      const lastUpdatePapel = await this.query.papelOne.resolve({
+        args: {
+          sort: this.query.papelOne.args.sort.type._gqcFields.CREATEDAT_DESC.value,
+        },
+      });
+
+      dataPesquisa = lastUpdatePapel.createdAt;
     }
     const newArgs = {};
 
