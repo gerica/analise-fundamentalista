@@ -12,10 +12,8 @@ class HtmlParseService {
     logger.info('HtmlParceService: parce');
     const { URL_PAPEIS_PARSE } = config;
     const papeis = [];
-    logger.info(URL_PAPEIS_PARSE);
-
     const response = await got(URL_PAPEIS_PARSE);
-    logger.info(response);
+
     const $ = Cheerio.load(response.body);
     $('table').each((index, table) => {
       $(table)
